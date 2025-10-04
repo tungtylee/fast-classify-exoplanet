@@ -1,4 +1,8 @@
+# for analysis
 pandas
 numpy
 scikit-learn
 matplotlib
+
+# for light curve
+lightkurve
