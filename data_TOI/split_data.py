@@ -104,10 +104,14 @@ def analyze_class_balance(train_df, test_df):
 
 
 if __name__ == '__main__':
-    # Relative path to the source file from the script's location
-    file_path = 'TOI_2025.10.03_22.49.45.csv'
-    # Relative path to the output directory
-    output_dir = './'
+    parser = argparse.ArgumentParser(description='Split TOI data into training and test sets based on star ID.')
+    parser.add_argument('input_csv', type=str, nargs='?',
+                        default='data/TOI_2025.10.03_22.49.45.csv',
+                        help='Path to the source TOI CSV file. Defaults to data/TOI_2025.10.03_22.49.45.csv')
+    parser.add_argument('output_dir', type=str, nargs='?',
+                        default='data',
+                        help="Directory to save the output files. Defaults to 'data'.")
+    args = parser.parse_args()
 
     seed = 1004
-    split_data_train_test(seed, file_path, output_dir)
+    split_data_train_test(seed, args.input_csv, args.output_dir)

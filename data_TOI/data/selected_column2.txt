@@ -1,0 +1,8 @@
+toi
+tid
+tfopwg_disp
+st_tmag
+st_dist
+st_teff
+st_logg
+st_rad
