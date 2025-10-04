@@ -4,7 +4,7 @@ This directory contains scripts for processing and filtering data related to TES
 
 ## Scripts
 
-All scripts should be run from the project's root directory.
+All scripts should be run from within the `data_TOI` directory.
 
 ### 1. `split_data.py`
 
@@ -74,20 +74,19 @@ python analyze_column.py [input_csv_path] --missing-only
 
 This script compares a prediction CSV file against a ground truth (GT) CSV file to evaluate model performance. It uses a JSON configuration file to determine which columns to use for scoring and how to map values to 'positive', 'negative', or 'dontcare'. It calculates and displays a confusion matrix, accuracy, precision, recall, and F1-score.
 
-**Note:** This script is located in the project's root directory.
+**Note:** A default `scorer_conf.json` is provided in this directory.
 
 **Usage:**
 ```bash
-# The config file is optional and defaults to 'scorer_conf.json'
+# The config file is optional and defaults to 'scorer_conf.json' in the current directory
 python score_model.py <path_to_gt.csv> <path_to_pred.csv> [path_to_config.json]
 ```
 
 **Example:**
 ```bash
-# Compare a prediction file against the training set
+# Compare a prediction file against the training set using the default config
 python score_model.py data/train_set.csv data/train_set_pred.csv
 ```
-A default `scorer_conf.json` is provided in the root directory. You can copy and modify it for different scoring rules.
 
 ## Example Workflow
 
@@ -104,6 +103,10 @@ python filter_csv.py data/test_set.csv data/selected_columns.txt data/test_set_f
 
 # 4. Analyze the new filtered sets, for example to check for missing values
 python analyze_column.py data/train_set_filtered.csv --missing-only
+
+# 5. Score a prediction file against the test set
+# (This assumes you have generated a 'test_set_pred.csv' file with your model)
+python score_model.py data/test_set_filtered.csv data/test_set_pred.csv
 ```
 
 ## Data Source
