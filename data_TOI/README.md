@@ -70,6 +70,25 @@ python analyze_column.py [input_csv_path] --missing-only
 
 *Note: Initial analysis shows that the `st_dist`, `st_teff`, `st_logg`, and `st_rad` columns contain missing values.*
 
+### 5. `score_model.py`
+
+This script compares a prediction CSV file against a ground truth (GT) CSV file to evaluate model performance. It uses a JSON configuration file to determine which columns to use for scoring and how to map values to 'positive', 'negative', or 'dontcare'. It calculates and displays a confusion matrix, accuracy, precision, recall, and F1-score.
+
+**Note:** This script is located in the project's root directory.
+
+**Usage:**
+```bash
+# The config file is optional and defaults to 'scorer_conf.json'
+python score_model.py <path_to_gt.csv> <path_to_pred.csv> [path_to_config.json]
+```
+
+**Example:**
+```bash
+# Compare a prediction file against the training set
+python score_model.py data/train_set.csv data/train_set_pred.csv
+```
+A default `scorer_conf.json` is provided in the root directory. You can copy and modify it for different scoring rules.
+
 ## Example Workflow
 
 ```bash
