@@ -6,3 +6,7 @@ matplotlib
 
 # for light curve
 lightkurve
+
+# training
+xgboost
+shap
