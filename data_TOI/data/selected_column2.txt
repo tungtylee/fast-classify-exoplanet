@@ -1,6 +1,9 @@
 toi
 tid
 tfopwg_disp
+pl_orbper
+pl_trandurh
+pl_trandep
 st_tmag
 st_dist
 st_teff
