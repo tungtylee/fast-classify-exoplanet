@@ -1,0 +1,65 @@
+,編號,欄位名稱,Python 型別,Table Label,估計數值範圍／描述,意義 / 為什麼可能有用,潛在問題 / 注意,優先程度建議
+14,15,koi_period,`float`,Orbital Period (days),幾天到數百天,行星軌道週期，是區分類別重要特徵,長週期樣本稀少,高
+19,20,koi_impact,`Optional[float]`,Impact Parameter,投影偏移（以恆星半徑為單位）,影響光曲線形狀,與傾角、半徑比例高度相關,高
+20,21,koi_duration,`Optional[float]`,Transit Duration (hours),凌日持續時間（小時）,時間長度是行星遮蔽尺度指標,資料噪音或缺失時效果差,高
+22,23,koi_depth,`Optional[float]`,Transit Depth (ppm),光度下降深度，以 ppm 為單位,是遮蔽強度／行星大小指標,小深度容易被雜訊掩蓋,高
+23,24,koi_ror,`Optional[float]`,Planet-Star Radius Ratio,行星半徑與恆星半徑比,是遮蔽比例經典特徵,恆星半徑估算誤差會影響,高
+26,27,koi_prad,`Optional[float]`,Planetary Radius (Earth radii),行星半徑，以地球半徑為單位,更直觀的物理半徑估算,依賴恆星半徑估算誤差,高
+39,40,koi_max_mult_ev,`Optional[float]`,Maximum Multiple Event Statistic,最大疊加事件統計量 (MES),描述多次凌日疊加信號的顯著性,是重要訊號品質特徵,高
+40,41,koi_model_snr,`Optional[float]`,Transit Signal-to-Noise,信號 / 噪音比率 (SNR),衡量擬合模型中信號強度對抗噪音的能力,極端值要注意離群,高
+42,43,koi_num_transits,`Optional[int]`,Number of Transits,觀測期間內預期或實際的凌日次數,凌日次數越多通常可信度越高,若次數少，容易被誤判幹擾,高
+57,58,koi_fwm_stat_sig,`Optional[float]`,Flux-Weighted Offset Significance (%),偏移統計顯著性百分比,表示偏移是否具有統計顯著性,若為 100% 表示無明顯偏移,高
+17,18,koi_eccen,`Optional[float]`,Eccentricity,0 ≤ e < 1,軌道偏心率,許多候選估算不穩定,中偏高
+24,25,koi_srho,`Optional[float]`,Fitted Stellar Density [g/cm³],擬合得到的恆星密度,用來驗證光曲線模型合理性,擬合誤差可能很大,中偏高
+27,28,koi_sma,`Optional[float]`,Orbit Semi-Major Axis (AU),軌道長半軸，以 AU 表示,描述行星與恆星距離尺度,若恆星質量估錯，計算錯誤,中偏高
+38,39,koi_max_sngle_ev,`Optional[float]`,Maximum Single Event Statistic,單次事件統計量 (SES),描述單次凌日與噪音比的強度,可能與其他統計量共線,中偏高
+48,49,koi_model_chisq,`Optional[float]`,Model Goodness of Fit,模型擬合的 χ² 或 reduced χ² 值,衡量模型與資料的吻合程度,極差值可能代表模型不適,中偏高
+7,8,koi_score,`Optional[float]`,Disposition Score,0.0 ~ 1.0 分數,表示對判定的信心水準,可能與 disposition 共線,中
+15,16,koi_time0bk,`Optional[float]`,Transit Epoch (BJD – offset),BJD 減常數後的基準凌日時間,用於相位、殘差分析,自身分類意義較低,中
+16,17,koi_time0,`Optional[float]`,Transit Epoch in BJD,完整 BJD 的基準凌日時間,可用於時間特徵,分類貢獻可能有限,中
+18,19,koi_longp,`Optional[float]`,Long. of Periastron (deg),近日點方向角 (0°–360°),補充描述橢圓軌道方向,單獨意義可能偏低,中
+21,22,koi_ingress,`Optional[float]`,Ingress Duration (hours),入射階段時間（小時）,揭示光曲線邊緣結構,許多候選無法精確估出,中
+25,26,koi_fittype,`Optional[str]`,Planetary Fit Type,"擬合方法類型（LS, MCMC, DV, none, LS+MCMC）",描述擬合方法,類別多且難向量化,中
+28,29,koi_incl,`Optional[float]`,Inclination (deg),軌道傾角 (度),描述軌道傾斜程度,真行星傾角集中於 ~90°,中
+29,30,koi_teq,`Optional[float]`,Equilibrium Temperature (Kelvin),平衡溫度估算值 (K),初步估算行星溫環境,假設多，不一定精確,中
+30,31,koi_insol,`Optional[float]`,Insolation Flux [Earth flux],相對地球的恆星輻射通量,描述行星接收能量強度,與距離 / 恆星亮度高度相關,中
+31,32,koi_dor,`Optional[float]`,Planet-Star Distance over Star Radius,行星—恆星距離 / 恆星半徑 (中點時刻),幾何參數,若軌道偏心度大則值隨時間變化,中
+41,42,koi_count,`Optional[int]`,Number of Planets,該恆星系統中辨識出的候選行星數量,系統規模或多行星指標,對單體 KOI 分類幫助有限,中
+45,46,koi_quarters,`Optional[str]`,Quarters,bit 字串表示哪些 Kepler 季度參與搜尋,顯示覆蓋的季度,需解析 bit 字串,中
+47,48,koi_model_dof,`Optional[int]`,Model Degrees of Freedom,擬合模型的自由度 (DOF),衡量模型複雜度,DOF 過大或過小可能有問題,中
+51,52,koi_fwm_sra,`Optional[float]`,FW Source α(OOT),flux-weighted centroid 在 RA 方向的估計值,描述信號源在 RA 坐標光心位置,偏移估計可能受混雜源影響偏差大,中
+52,53,koi_fwm_sdec,`Optional[float]`,FW Source δ(OOT),flux-weighted centroid 在 Dec 方向的估計值,描述信號源在 Dec 坐標光心位置,偏移估計可能受混雜源影響偏差大,中
+53,54,koi_fwm_srao,`Optional[float]`,FW Δα(OOT),in-vs-out-of-transit 光心在 RA 方向的偏移差,衡量光心偏移差異是否顯著,偏移差異若大可能是假信號,中
+54,55,koi_fwm_sdeco,`Optional[float]`,FW Δδ(OOT),in-vs-out-of-transit 光心在 Dec 方向的偏移差,衡量光心偏移差異是否顯著,偏移差異若大可能是假信號,中
+55,56,koi_fwm_prao,`Optional[float]`,FW Source Δα(OOT),信號源與目標恆星於 RA 方向的偏移量,判斷信號是否來自目標恆星,大偏移可能表示信號來自背景物體,中
+56,57,koi_fwm_pdeco,`Optional[float]`,FW Source Δδ(OOT),信號源與目標恆星於 Dec 方向的偏移量,判斷信號是否來自目標恆星,大偏移可能表示信號來自背景物體,中
+58,59,koi_dicco_mra,`Optional[float]`,PRF Δα_{SQ}(OOT),差分圖像法得出的平均 ΔRA,描述信號源與目標恆星在 RA 方向的偏移,偏移過大可能是假信號,中
+59,60,koi_dicco_mdec,`Optional[float]`,PRF Δδ_{SQ}(OOT),差分圖像法得出的平均 ΔDec,描述信號源與目標恆星在 Dec 方向的偏移,偏移過大可能是假信號,中
+60,61,koi_dicco_msky,`Optional[float]`,PRF Δθ_{SQ}(OOT),差分圖像法的天空偏移距離,描述信號源與目標恆星的總偏移距離,可與 ΔRA / ΔDec 結合判定信號來源,中
+61,62,koi_dikco_mra,`Optional[float]`,PRF Δα_{SQ}(KIC),差分圖像信號源與 KIC 目標在 RA 方向的 ΔRA,作為偏移參考,若偏離過大可能是假信號,中
+62,63,koi_dikco_mdec,`Optional[float]`,PRF Δδ_{SQ}(KIC),差分圖像信號源與 KIC 目標在 Dec 方向的 ΔDec,作為偏移參考,若偏差過大可能是假信號,中
+63,64,koi_dikco_msky,`Optional[float]`,PRF Δθ_{SQ}(KIC),差分圖像信號源與 KIC 目標在天空的偏移距離,描述偏移總角距離,若偏移過大可能是假信號,中
+0,1,kepid,`int`,Kepler Identification or KepID,整數的 KIC 編號,唯一恆星識別碼,編號本身不攜帶分類訊息,低
+2,3,kepler_name,`Optional[str]`,Kepler Name,若 KOI 被確認則有其行星名，否則為 None,標示是否為已確認行星,多數 KOI 尚未確認，欄位可能為空,低
+5,6,koi_vet_date,`Optional[str]` / `Optional[datetime]`,Date of Last Parameter Update,最近一次參數更新時間,紀錄更新時間點,難以直接變成有意義特徵,低
+8,9,koi_fpflag_nt,`Optional[bool]`,Not Transit-Like Flag,True / False 表示是否非典型凌日形狀,判別偽陽性類型,標記性質強，可能造成資料洩漏,低
+9,10,koi_fpflag_ss,`Optional[bool]`,Stellar Eclipse Flag,True / False 表示是否為恆星食現象,偵測與雙星、恆星變星混淆,標記揭示偽陽性可能性,低
+10,11,koi_fpflag_co,`Optional[bool]`,Centroid Offset Flag,True / False 表示光心偏移可能性,若偏移，信號可能來自背景星,若用會洩漏資訊,低
+12,13,koi_disp_prov,`Optional[str]`,Disposition Provenance,判定來源 / 依據,說明決策用哪種方法或資料,metadata，不做特徵,低
+13,14,koi_comment,`Optional[str]`,KOI Comment,補充註記 / 備註,記錄判定理由、標記關鍵字等,文本難以量化為特徵,低
+32,33,koi_limbdark_mod,`Optional[str]`,Limb Darkening Model Name,limb darkening 模型名稱,描述擬合用的星體模型,多為模型設定，非分類特徵,低
+33,34,koi_ldm_coeff1,`Optional[float]`,Limb Darkening Coefficient 1,第一個邊緣暗化係數,用於光曲線模型計算,多為固定值，不具變異性,低
+34,35,koi_ldm_coeff2,`Optional[float]`,Limb Darkening Coefficient 2,第二個邊緣暗化係數,描述暗化效應,多為定值，變異小,低
+35,36,koi_ldm_coeff3,`Optional[float]`,Limb Darkening Coefficient 3,第三個暗化係數,用於較複雜模型,若模型不使用則可能為 None,低
+36,37,koi_ldm_coeff4,`Optional[float]`,Limb Darkening Coefficient 4,第四個暗化係數,用於高階暗化模型,若模型不使用可能為 None,低
+37,38,koi_parm_prov,`Optional[str]`,KOI Parameter Provenance,參數來源 / provenance,說明數值來源方法,metadata，不作特徵,低
+43,44,koi_tce_plnt_num,`Optional[int]`,TCE Planet Number,TCE 的行星編號,用於對應 KOI 與 TCE 關係,metadata 識別用途,低
+44,45,koi_tce_delivname,`Optional[str]`,TCE Delivery Name,TCE 發佈名稱,說明該 KOI 所屬的 TCE 發佈版本,metadata 類別,低
+46,47,koi_trans_mod,`Optional[str]`,Transit Model Name,擬合所用凌日模型名稱,描述模型類型,模型名稱可能與資料品質關聯,低
+49,50,koi_datalink_dvr,`Optional[str]`,Link to DV Report,Data Validation 報告的相對連結,用以下載該 KOI 的驗證報告,無分類意義,低
+50,51,koi_datalink_dvs,`Optional[str]`,Link to DV Summary,Data Validation 摘要報告相對連結,提供該 KOI 的驗證摘要,無分類意義,低
+1,2,kepoi_name,`str`,KOI Name,KOI 名稱（例如 “K00001.01”）,用來識別候選體,名稱為標識用途，不適合作為特徵,不可作特徵
+3,4,koi_disposition,`str`,Exoplanet Archive Disposition,“CANDIDATE” / “FALSE POSITIVE” / “CONFIRMED” / “NOT DISPOSITIONED”,目標分類標籤,不能作為模型輸入特徵以免洩漏,不可作特徵
+4,5,koi_vet_stat,`Optional[str]`,Vetting Status,“ACTIVE” / “DONE” / None,表示該 KOI 是否正在審核或已完成審核,審核狀態可能揭示 label 信息,通常捨棄
+6,7,koi_pdisposition,`Optional[str]`,Disposition Using Kepler Data,pipeline 的初步判定,表示最初流程分類結果,與最終 disposition 關聯太強,通常捨棄
+11,12,koi_fpflag_ec,`Optional[bool]`,Ephemeris Match Indicates Contamination Flag,True / False 標記週期重合污染可能性,標記可能泄露偽陽性性質,低,
