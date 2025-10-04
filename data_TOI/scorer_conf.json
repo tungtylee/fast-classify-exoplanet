@@ -2,7 +2,7 @@
     "id_column": "toi",
     "target_column": "tfopwg_disp",
     "mapping": {
-        "PC": "positive",
+        "PC": "dontcare",
         "KP": "positive",
         "CP": "positive",
         "FP": "negative",

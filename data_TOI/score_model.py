@@ -54,18 +54,23 @@ def calculate_scores(gt_csv, pred_csv, config_path):
         gt_class = mapping.get(gt_val, 'dontcare')
         pred_class = mapping.get(pred_val, 'dontcare')
 
-        if gt_class == 'dontcare' or pred_class == 'dontcare':
+        # Per user request, only ignore if the ground truth is 'dontcare'
+        if gt_class == 'dontcare':
             scores['ignored'] += 1
             continue
 
-        if gt_class == positive_label and pred_class == positive_label:
-            scores['TP'] += 1
-        elif gt_class == negative_label and pred_class == positive_label:
-            scores['FP'] += 1
-        elif gt_class == negative_label and pred_class == negative_label:
-            scores['TN'] += 1
-        elif gt_class == positive_label and pred_class == negative_label:
-            scores['FN'] += 1
+        # If gt is positive, a 'positive' prediction is a TP, anything else is an FN.
+        if gt_class == positive_label:
+            if pred_class == positive_label:
+                scores['TP'] += 1
+            else:  # Includes 'negative' and 'dontcare' predictions
+                scores['FN'] += 1
+        # If gt is negative, a 'positive' prediction is an FP, anything else is a TN.
+        elif gt_class == negative_label:
+            if pred_class == positive_label:
+                scores['FP'] += 1
+            else:  # Includes 'negative' and 'dontcare' predictions
+                scores['TN'] += 1
 
     # 5. Calculate and print metrics
     tp, fp, tn, fn = scores['TP'], scores['FP'], scores['TN'], scores['FN']
