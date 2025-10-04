@@ -1,8 +1,8 @@
-"""將 cumulative_KOI_filtered.csv 依 `koi_disposition` 分成訓練與測試資料集。
+"""Split ``cumulative_KOI_filtered.csv`` into train/test sets by ``koi_disposition``.
 
-特別設計提供 CONFIRMED、CANDIDATE 視為正類，
-FALSE POSITIVE 視為負類，並統計 NOT DISPOSITIONED。
-同時維持相同 `kepid`（恆星 ID）的樣本不會跨越 train/test。
+Records labelled CONFIRMED or CANDIDATE are counted as positive, FALSE POSITIVE
+as negative, while NOT DISPOSITIONED is tracked separately. Samples that share
+the same ``kepid`` stay within the same split to avoid leakage across sets.
 """
 
 from __future__ import annotations
@@ -17,7 +17,7 @@ from typing import Iterable, Sequence
 DEFAULT_INPUT = Path(__file__).resolve().parent / "datas/cumulative_KOI_filtered.csv"
 DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parent / "datas"
 GROUP_COLUMN = "kepid"
-LABEL_COLUMN_INDEX = 2  # 第三個欄位 (0-based index)
+LABEL_COLUMN_INDEX = 2  # Third column (0-based index)
 DEFAULT_TRAIN_RATIO = 0.8
 DEFAULT_SEED = 42
 POSITIVE_LABELS = ("CONFIRMED", "CANDIDATE")
@@ -31,35 +31,35 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         "--input",
         type=Path,
         default=DEFAULT_INPUT,
-        help="來源資料 (預設：data_KOI/datas/cumulative_KOI_filtered.csv)",
+        help="Input dataset (default: data_KOI/datas/cumulative_KOI_filtered.csv)",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
-        help="輸出資料夾 (預設：data_KOI/datas)",
+        help="Output directory (default: data_KOI/datas)",
     )
     parser.add_argument(
         "--train-ratio",
         type=float,
         default=DEFAULT_TRAIN_RATIO,
-        help="訓練資料比例 (0-1，預設 0.8)",
+        help="Portion of groups assigned to training (0-1, default 0.8)",
     )
     parser.add_argument(
         "--seed",
         type=int,
         default=DEFAULT_SEED,
-        help="亂數種子 (預設 42)",
+        help="Random seed (default 42)",
     )
     parser.add_argument(
         "--train-name",
         default="train_set.csv",
-        help="訓練資料輸出檔名 (預設 train_set.csv)",
+        help="Filename for the training split (default train_set.csv)",
     )
     parser.add_argument(
         "--test-name",
         default="test_set.csv",
-        help="測試資料輸出檔名 (預設 test_set.csv)",
+        help="Filename for the test split (default test_set.csv)",
     )
     return parser.parse_args(argv)
 
@@ -69,23 +69,23 @@ def load_rows(path: Path) -> tuple[list[str], list[dict[str, str]]]:
         with path.open("r", encoding="utf-8", newline="") as handle:
             reader = csv.DictReader(handle)
             if reader.fieldnames is None:
-                raise ValueError("來源檔案缺少表頭")
+                raise ValueError("Input file is missing a header row")
             rows = list(reader)
     except FileNotFoundError as exc:
-        raise SystemExit(f"找不到來源檔案：{path}") from exc
+        raise SystemExit(f"Input file not found: {path}") from exc
     except Exception as exc:
-        raise SystemExit(f"讀取 {path} 時發生錯誤：{exc}") from exc
+        raise SystemExit(f"Failed to read {path}: {exc}") from exc
 
     if not rows:
-        raise SystemExit(f"來源資料為空：{path}")
+        raise SystemExit(f"Input dataset is empty: {path}")
 
     if LABEL_COLUMN_INDEX >= len(reader.fieldnames):
-        raise SystemExit("來源資料第三欄不存在，請確認輸入檔格式。")
+        raise SystemExit("The third column is missing; please confirm the input schema.")
 
     label_col = reader.fieldnames[LABEL_COLUMN_INDEX]
     if label_col != "koi_disposition":
         print(
-            f"警告：第三欄非 `koi_disposition`，實際欄位為 `{label_col}`，仍以此欄為標籤。"
+            f"Warning: the third column is `{label_col}` instead of `koi_disposition`; proceeding with that field.",
         )
 
     return reader.fieldnames, rows
@@ -106,7 +106,7 @@ def split_by_group(
         grouped[group_key].append(row)
 
     if not grouped:
-        raise SystemExit("無法根據 `kepid` 分組，請確認欄位是否存在。")
+        raise SystemExit("Unable to group by `kepid`; please confirm the column is present.")
 
     group_keys = list(grouped.keys())
     rng = random.Random(seed)
@@ -227,7 +227,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     write_csv(train_path, fieldnames, train_rows)
     write_csv(test_path, fieldnames, test_rows)
 
-    print("檔案已輸出：")
+    print("Files written:")
     print(f"- {train_path}")
     print(f"- {test_path}")
 

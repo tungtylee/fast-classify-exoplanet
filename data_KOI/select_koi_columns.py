@@ -1,7 +1,8 @@
-"""依照欄位優先度整理 cumulative_KOI.csv。
+"""Filter ``cumulative_KOI.csv`` based on the recommended column priority.
 
-此腳本會從 `KOI_col_info.csv` 讀取欄位清單，挑選 "優先程度建議"
-為「高」或「中高」的欄位，從 cumulative_KOI.csv 擷取對應資料並另存 CSV。
+The script reads the column metadata in ``KOI_col_info.csv``, keeps the fields
+whose priority suggestion is marked as high or medium-high, and writes a
+trimmed copy of ``cumulative_KOI.csv`` containing only those columns.
 """
 
 from __future__ import annotations
@@ -12,20 +13,30 @@ import sys
 from pathlib import Path
 from typing import Iterable, Sequence
 
-PRIORITY_COLUMN = "優先程度建議"
-NAME_COLUMN = "欄位名稱"
-DEFAULT_PRIORITIES = ("高", "中高")
+NAME_COLUMN_INDEX = 2
+PRIORITY_COLUMN_INDEX = 8
+DEFAULT_PRIORITIES = ("high", "medium_high")
+PRIORITY_TRANSLATIONS = {
+    "": "",
+    "\u9ad8": "high",  # Chinese label for "high"
+    "\u4e2d\u9ad8": "medium_high",  # Chinese label for "medium-high"
+    "\u4e2d": "medium",  # Chinese label for "medium"
+    "\u4f4e": "low",  # Chinese label for "low"
+}
 REQUIRED_COLUMNS = ("kepid", "kepler_name", "koi_disposition")
 
 
 def _normalize_priority(value: str) -> str:
-    """移除常見修飾字以便比對，例如 `中偏高` → `中高`。"""
+    """Map raw priority labels to lowercase English keywords."""
 
-    return value.replace("偏", "").strip()
+    normalized = value.replace("\u504f", "").strip()  # remove the modifier character used in Chinese labels
+    if not normalized:
+        return ""
+    return PRIORITY_TRANSLATIONS.get(normalized, normalized.lower())
 
 
 def load_priority_columns(info_path: Path, priorities: Sequence[str]) -> list[str]:
-    """從 KOI 欄位資訊表讀取符合優先度的欄位名稱。"""
+    """Read column names whose priority matches ``priorities``."""
 
     normalized_priorities = {_normalize_priority(p) for p in priorities}
 
@@ -33,22 +44,30 @@ def load_priority_columns(info_path: Path, priorities: Sequence[str]) -> list[st
         with info_path.open("r", encoding="utf-8-sig", newline="") as handle:
             reader = csv.DictReader(handle)
             if reader.fieldnames is None:
-                raise ValueError("KOI 欄位資訊表缺少表頭")
+                raise ValueError("KOI column info file is missing a header row")
+
+            try:
+                name_key = reader.fieldnames[NAME_COLUMN_INDEX]
+                priority_key = reader.fieldnames[PRIORITY_COLUMN_INDEX]
+            except IndexError as exc:
+                raise ValueError(
+                    "KOI column info file does not match the expected layout."
+                ) from exc
 
             selected: list[str] = []
-            for idx, row in enumerate(reader, start=2):  # 起始列號扣除表頭
-                name = (row.get(NAME_COLUMN) or "").strip()
+            for idx, row in enumerate(reader, start=2):
+                name = (row.get(name_key) or "").strip()
                 if not name:
                     continue
-                priority = _normalize_priority((row.get(PRIORITY_COLUMN) or "").strip())
+                priority = _normalize_priority((row.get(priority_key) or "").strip())
                 if priority and priority in normalized_priorities:
                     selected.append(name)
     except FileNotFoundError as exc:
-        raise FileNotFoundError(f"找不到欄位資訊檔案：{info_path}") from exc
+        raise FileNotFoundError(f"Column info file not found: {info_path}") from exc
 
     if not selected:
         raise ValueError(
-            f"在 {info_path} 中未找到符合優先度 {priorities} 的欄位。"
+            f"No columns with priority {priorities} were found in {info_path}."
         )
 
     return selected
@@ -59,13 +78,13 @@ def filter_cumulative_csv(
     output_path: Path,
     columns: Sequence[str],
 ) -> None:
-    """從 cumulative_KOI.csv 擷取指定欄位並輸出。"""
+    """Select the requested columns from ``cumulative_KOI.csv`` and write them."""
 
     try:
         with cumulative_path.open("r", encoding="utf-8", newline="") as handle:
             reader = csv.DictReader(handle)
             if reader.fieldnames is None:
-                raise ValueError("cumulative_KOI.csv 缺少表頭")
+                raise ValueError("cumulative_KOI.csv is missing a header row")
 
             available_columns = reader.fieldnames
 
@@ -81,14 +100,14 @@ def filter_cumulative_csv(
             missing = [col for col in unique_columns if col not in available_columns]
             if missing:
                 print(
-                    "警告：以下欄位在 cumulative_KOI.csv 中不存在，將略過："
+                    "Warning: the following columns are not present in cumulative_KOI.csv and will be skipped: "
                     + ", ".join(missing),
                     file=sys.stderr,
                 )
 
             final_columns = [col for col in unique_columns if col in available_columns]
             if not final_columns:
-                raise ValueError("選定欄位皆不存在於 cumulative_KOI.csv")
+                raise ValueError("None of the requested columns exist in cumulative_KOI.csv")
 
             output_path.parent.mkdir(parents=True, exist_ok=True)
             with output_path.open("w", encoding="utf-8", newline="") as out_handle:
@@ -97,7 +116,7 @@ def filter_cumulative_csv(
                 for row in reader:
                     writer.writerow({col: row.get(col, "") for col in final_columns})
     except FileNotFoundError as exc:
-        raise FileNotFoundError(f"找不到 KOI 資料檔案：{cumulative_path}") from exc
+        raise FileNotFoundError(f"KOI data file not found: {cumulative_path}") from exc
 
 
 def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
@@ -106,25 +125,25 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
         "--info",
         type=Path,
         default=Path(__file__).resolve().parent / "datas/KOI_col_info.csv",
-        help="KOI 欄位資訊檔案路徑 (預設：data_KOI/datas/KOI_col_info.csv)",
+        help="Path to KOI column info (default: data_KOI/datas/KOI_col_info.csv)",
     )
     parser.add_argument(
         "--cumulative",
         type=Path,
         default=Path(__file__).resolve().parent / "datas/cumulative_KOI.csv",
-        help="cumulative_KOI.csv 檔案路徑",
+        help="Path to the cumulative_KOI.csv file",
     )
     parser.add_argument(
         "--output",
         type=Path,
         default=Path(__file__).resolve().parent / "datas/cumulative_KOI_filtered.csv",
-        help="輸出 CSV 路徑",
+        help="Destination CSV path",
     )
     parser.add_argument(
         "--priorities",
         nargs="*",
         default=list(DEFAULT_PRIORITIES),
-        help="欲保留的優先程度（預設：高、中高）",
+        help="Priority labels to keep (default: high, medium_high)",
     )
     return parser.parse_args(argv)
 
@@ -136,14 +155,14 @@ def main(argv: Iterable[str] | None = None) -> int:
         columns = load_priority_columns(args.info, args.priorities)
         filter_cumulative_csv(args.cumulative, args.output, columns)
     except Exception as exc:
-        print(f"錯誤：{exc}", file=sys.stderr)
+        print(f"Error: {exc}", file=sys.stderr)
         return 1
 
     print(
-        "已完成欄位篩選：\n"
-        f"- 來源：{args.cumulative}\n"
-        f"- 欄位資訊：{args.info}\n"
-        f"- 儲存為：{args.output}"
+        "Column filtering finished:\n"
+        f"- Source: {args.cumulative}\n"
+        f"- Column info: {args.info}\n"
+        f"- Saved as: {args.output}"
     )
     return 0
 

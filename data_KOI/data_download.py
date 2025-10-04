@@ -1,7 +1,8 @@
-"""下載 Kepler Cumulative KOI 資料表並存成 CSV。
+"""Download the Kepler cumulative KOI catalog and store it as CSV.
 
-此腳本透過 `kplr` 套件連線 MAST 服務端點，抓取最新的
-Cumulative KOI 目錄資料並儲存為本地的 CSV 檔，供離線分析使用。
+The script queries the MAST archive via the ``kplr`` client, retrieves the
+latest cumulative KOI table, and writes it locally so the dataset can be used
+offline by the rest of the project.
 """
 
 from __future__ import annotations
@@ -16,12 +17,12 @@ try:
     import kplr
 except ImportError as exc:
     raise SystemExit(
-        "找不到 `kplr` 套件，請先執行 `pip install kplr` 再嘗試。"
+        "The `kplr` package is required. Install it with `pip install kplr` before rerunning."
     ) from exc
 
 
 def _row_to_dict(row: object) -> Mapping[str, object]:
-    """將 kplr 回傳的資料列轉成一般字典。"""
+    """Convert a ``kplr`` result row into a plain dictionary."""
 
     if isinstance(row, Mapping):
         return dict(row)
@@ -48,12 +49,12 @@ def _row_to_dict(row: object) -> Mapping[str, object]:
         return attrs
 
     raise TypeError(
-        f"無法解析 kplr 資料列 (type={type(row)!r})，API 格式可能已變更。"
+        f"Unable to interpret kplr row (type={type(row)!r}); the API format may have changed."
     )
 
 
 def _normalize_results(result: object) -> Sequence[object]:
-    """將 kplr 回傳的結果整理成序列。"""
+    """Normalize a ``kplr`` response into an iterable of rows."""
 
     if result is None:
         return []
@@ -79,7 +80,7 @@ def _normalize_results(result: object) -> Sequence[object]:
 
 
 def _call_with_strategies(client: kplr.API, query: Mapping[str, object]) -> Sequence[object]:
-    """嘗試多種呼叫方式取得 cumulative KOI 資料。"""
+    """Try several strategies to obtain the cumulative KOI catalog."""
 
     strategies = []
 
@@ -110,17 +111,17 @@ def _call_with_strategies(client: kplr.API, query: Mapping[str, object]) -> Sequ
             errors.append(f"{caller.__name__}: {exc}")
             continue
         except Exception as exc:
-            raise RuntimeError(f"kplr 下載 KOI 資料失敗：{exc}") from exc
+            raise RuntimeError(f"Failed to retrieve KOI catalog via kplr: {exc}") from exc
 
         if normalized:
             return normalized
 
-    detail = "; ".join(errors) or "無法取得任何資料"
-    raise RuntimeError(f"kplr 下載 KOI 資料失敗：{detail}")
+    detail = "; ".join(errors) or "No data was returned"
+    raise RuntimeError(f"Failed to retrieve KOI catalog via kplr: {detail}")
 
 
 def download_cumulative_koi(columns: Iterable[str] | None = None) -> list[Mapping[str, object]]:
-    """透過 kplr 下載 Cumulative KOI 資料。"""
+    """Download the cumulative KOI catalog through the ``kplr`` client."""
 
     client = kplr.API()
     query: dict[str, object] = {}
@@ -131,20 +132,20 @@ def download_cumulative_koi(columns: Iterable[str] | None = None) -> list[Mappin
 
     rows = [_row_to_dict(row) for row in results]
     if not rows:
-        raise RuntimeError("未從 kplr 取得任何 KOI 資料")
+        raise RuntimeError("kplr returned an empty KOI catalog")
 
     return rows
 
 
 def save_as_csv(rows: Iterable[Mapping[str, object]], output_path: Path) -> None:
-    """將資料列寫入 CSV 檔。"""
+    """Write KOI records into ``output_path`` as CSV."""
 
     rows = list(rows)
     fieldnames: set[str] = set()
     for row in rows:
         fieldnames.update(row.keys())
     if not fieldnames:
-        raise ValueError("KOI 資料缺少欄位，無法輸出 CSV")
+        raise ValueError("No columns discovered in KOI data; aborting CSV write")
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", newline="", encoding="utf-8") as fh:
@@ -160,12 +161,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         "--output",
         type=Path,
         default=Path(__file__).resolve().parent / "cumulative_koi.csv",
-        help="輸出 CSV 路徑 (預設：data_KOI/cumulative_koi.csv)",
+        help="Destination CSV path (default: data_KOI/cumulative_koi.csv)",
     )
     parser.add_argument(
         "--columns",
         nargs="*",
-        help="可選欄位列表，若不指定則下載全部欄位",
+        help="Optional list of KOI columns to request from the API.",
     )
     return parser.parse_args(argv)
 
@@ -177,10 +178,10 @@ def main(argv: list[str] | None = None) -> int:
         koi_rows = download_cumulative_koi(args.columns)
         save_as_csv(koi_rows, args.output)
     except Exception as exc:
-        print(f"錯誤：{exc}", file=sys.stderr)
+        print(f"Error: {exc}", file=sys.stderr)
         return 1
 
-    print(f"已將 Cumulative KOI 資料儲存至 {args.output}")
+    print(f"Saved cumulative KOI catalog to {args.output}")
     return 0
 
 
