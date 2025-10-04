@@ -24,6 +24,7 @@ def analyze_csv(file_path, missing_only=False):
         return
 
     columns_displayed = 0
+    total_rows = len(df)
     for col in df.columns:
         missing_values = df[col].isnull().sum()
 
@@ -35,9 +36,19 @@ def analyze_csv(file_path, missing_only=False):
         print(f"Column: {col}")
         print(f"Data Type: {df[col].dtype}")
 
+        # Uniqueness analysis
+        unique_values = df[col].nunique()
+        # A column is considered unique if every row has a distinct value.
+        is_fully_unique = unique_values == total_rows
+        print(f"Unique Values: {unique_values}")
+        if is_fully_unique:
+            print("Is Column Unique: Yes")
+        else:
+            print("Is Column Unique: No")
+
         # Missing values
         if missing_values > 0:
-            print(f"Missing Values: {missing_values} ({missing_values/len(df):.2%})")
+            print(f"Missing Values: {missing_values} ({missing_values/total_rows:.2%})")
         else:
             print("Missing Values: 0")
 
@@ -50,12 +61,9 @@ def analyze_csv(file_path, missing_only=False):
         else:
             # Categorical column
             print("Type: Categorical")
-            unique_values = df[col].nunique()
-            print(f"Unique Values: {unique_values}")
-            
             # Heuristic to decide whether to print all unique values
             if unique_values > 50:
-                 print("(Too many to display)")
+                 print("Value Counts: (Too many to display)")
             else:
                 print("Value Counts:")
                 print(df[col].value_counts())
