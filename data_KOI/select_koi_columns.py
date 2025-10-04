@@ -15,7 +15,7 @@ from typing import Iterable, Sequence
 PRIORITY_COLUMN = "優先程度建議"
 NAME_COLUMN = "欄位名稱"
 DEFAULT_PRIORITIES = ("高", "中高")
-REQUIRED_COLUMNS = ("kepid", "kepler_name")
+REQUIRED_COLUMNS = ("kepid", "kepler_name", "koi_disposition")
 
 
 def _normalize_priority(value: str) -> str:
