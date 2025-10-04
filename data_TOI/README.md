@@ -52,7 +52,21 @@ python filter_csv.py [input_csv_path] [columns_file_path] [output_filtered_csv]
 python filter_csv.py data/train_set.csv data/selected_columns.txt data/train_set_filtered.csv
 ```
 
-### 4. `analyze_column.py`
+### 4. `filterout_dontcare.py`
+
+This script filters a CSV file to remove rows that are marked as "dontcare" in the `scorer_conf.json` file. This is useful for creating a binary classification dataset (positive/negative) from data that includes other classifications.
+
+**Usage:**
+```bash
+python filterout_dontcare.py [input_csv_path] [output_binary_csv]
+```
+
+**Example:**
+```bash
+python filterout_dontcare.py data/train_set.csv data/train_set_binary.csv
+```
+
+### 5. `analyze_column.py`
 
 This script provides a detailed analysis of each column in a CSV file. It shows the data type, missing value counts, and statistical summaries for numeric columns or value distributions for categorical columns.
 
@@ -70,7 +84,7 @@ python analyze_column.py [input_csv_path] --missing-only
 
 *Note: Initial analysis shows that the `st_dist`, `st_teff`, `st_logg`, and `st_rad` columns contain missing values.*
 
-### 5. `score_model.py`
+### 6. `score_model.py`
 
 This script compares a prediction CSV file against a ground truth (GT) CSV file to evaluate model performance. It uses a JSON configuration file to determine which columns to use for scoring and how to map values to 'positive', 'negative', or 'dontcare'. It calculates and displays a confusion matrix, accuracy, precision, recall, and F1-score.
 
@@ -101,12 +115,16 @@ python interactive_filter.py data/train_set.csv data/selected_columns.txt
 python filter_csv.py data/train_set.csv data/selected_columns.txt data/train_set_filtered.csv
 python filter_csv.py data/test_set.csv data/selected_columns.txt data/test_set_filtered.csv
 
-# 4. Analyze the new filtered sets, for example to check for missing values
-python analyze_column.py data/train_set_filtered.csv --missing-only
+# 4. Create binary classification datasets by removing "dontcare" rows
+python filterout_dontcare.py data/train_set_filtered.csv data/train_set_binary.csv
+python filterout_dontcare.py data/test_set_filtered.csv data/test_set_binary.csv
 
-# 5. Score a prediction file against the test set
+# 5. Analyze the new binary sets, for example to check for missing values
+python analyze_column.py data/train_set_binary.csv --missing-only
+
+# 6. Score a prediction file against the binary test set
 # (This assumes you have generated a 'test_set_pred.csv' file with your model)
-python score_model.py data/test_set_filtered.csv data/test_set_pred.csv
+python score_model.py data/test_set_binary.csv data/test_set_pred.csv
 ```
 
 ## Data Source
