@@ -27,7 +27,9 @@ A Fast Classify Exoplanet App with Simple Interactive Utility.
 
 ## Usage
 
-Under construction.
+```bash
+streamlit run main.py
+```
 
 ## Data
 

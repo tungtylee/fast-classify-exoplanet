@@ -10,3 +10,6 @@ lightkurve
 # training
 xgboost
 shap
+
+# for app
+streamlit
