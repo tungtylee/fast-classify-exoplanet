@@ -1,10 +1,19 @@
 # Fast Classify Exoplanet
 
+(Team Whitespace 2025 for SpaceApp 2025)
+Welcome to our project! We are amateurs passionate about exoplanet detection and we’re open to suggestions. Our goal is to collaborate and learn with others who share the same interest in exoplanet detection.
+
+## Presentation 
+
+[Link to Presentation]()
+
+## Summary
+
 An interactive Streamlit web application for classifying exoplanet candidates from TESS Object of Interest (TOI) data.
 
 This tool provides a simple, step-by-step user interface to walk through the entire machine learning workflow: from loading and visualizing data to training a model, running inference, and interpreting the results.
 
-## Key Features
+## Key Features of Web Applications
 
 This demo shows the application running at 2× speed.
 [![Demo (2× speed)](assets/demo_thumb.png)](https://github.com/user-attachments/assets/e14ab151-ac11-4c5f-bcd7-ccccd5b0b1f0)
@@ -24,6 +33,8 @@ This demo shows the application running at 2× speed.
     9.  Inference on Test Data
     10. Model Interpretation with SHAP Plots
 *   **Customizable Training**: Tune XGBoost hyperparameters directly in the UI before running the training.
+
+## Q and A
 
 ## Installation
 
@@ -69,3 +80,6 @@ Contributions are welcome! Please open an issue or submit a pull request.
 ## License
 
 This project is licensed under the MIT License.
+
+## References
+
