@@ -58,7 +58,7 @@ def train_xgboost_cv(df, features, target_col, n_estimators=300, max_depth=4, le
             reg_lambda=reg_lambda, reg_alpha=reg_alpha, random_state=seed, n_jobs=-1,
             use_label_encoder=False, eval_metric=eval_metric
         )
-        model.fit(X_train, y_train, eval_set=[(X_val, y_val)], early_stopping_rounds=50, verbose=False)
+        model.fit(X_train, y_train, verbose=False)
         
         y_val_prob = model.predict_proba(X_val)[:, 1]
         y_val_pred = (y_val_prob > 0.5).astype(int)
