@@ -25,8 +25,8 @@ def show_page():
             st.write(f"### Preview of `{selected_file}`")
             
             try:
-                df = pd.read_csv(file_path)
-                st.data_editor(df.head(), use_container_width=True)
+                df = pd.read_csv(file_path, comment='#')
+                st.data_editor(df.head(), width='stretch')
             except Exception as e:
                 st.error(f"Error loading file: {e}")
 
