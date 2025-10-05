@@ -24,10 +24,52 @@ Our approach involves using the powerful XGBoost algorithm to train classificati
 
 ## Results for KOI and TOI Analysis
 
-- Take TOI for example. We start to load data, understand the column, and finally select eight features. Those are related to toi parameter (pl_orbper, pl_trandurh, and pl_trandep), and some are related to stellar (st_tmag, st_dist, st_teff, st_logg, and st_rad).
-- A simple baseline on TOI test set: Accuracy:  0.8169, Precision: 0.7773, Recall: 0.8371
-- We also perform some SHAP analysis.
-- Please refer to the **[data_TOI/README_TOI.md](data_TOI/README_TOI.md)** file for a complete guide to the individual Python scripts, their parameters, and example workflows.
+Results on KOI test_set : 
+```
+--- Scoring Results ---
+Scored on column: 'koi_disposition'
+Total items matched by ID 'kepid': 2758
+Total items scored (after 'dontcare' filter): 2758
+Ignored items: 0
+
+--- Confusion Matrix ---
+                  | Predicted Positive | Predicted Negative
+------------------------------------------------------------
+Actual Positive   |     1542  (TP)     |     168   (FN)    
+Actual Negative   |     164   (FP)     |     884   (TN)    
+
+--- Metrics ---
+Accuracy:  0.8796
+Precision: 0.9039
+Recall:    0.9018
+F1-Score:  0.9028
+```
+
+
+Results on TOI test_set : 
+```
+--- Scoring Results ---
+Scored on column: 'tfopwg_disp'
+Total items matched by ID 'toi': 1547
+Total items scored (after 'dontcare' filter): 486
+Ignored items: 1061
+
+--- Confusion Matrix ---
+                  | Predicted Positive | Predicted Negative
+------------------------------------------------------------
+Actual Positive   |     185   (TP)     |      36   (FN)    
+Actual Negative   |      53   (FP)     |     212   (TN)    
+
+--- Metrics ---
+Accuracy:  0.8169
+Precision: 0.7773
+Recall:    0.8371
+F1-Score:  0.8061
+```
+
+- Take TOI for example. We start by loading the data, understanding the columns, and finally selecting eight features. These are related to TOI parameters (pl_orbper, pl_trandurh, and pl_trandep), and some are related to stellar properties (st_tmag, st_dist, st_teff, st_logg, and st_rad). For the selection of KOI features, please refer to fast-classify-exoplanet/data_KOI/datas/cumulative_KOI_filtered.csv.
+
+- We also perform SHAP analysis to interpret model behavior. For a detailed explanation of each Python script, including parameters and example workflows, please refer to the **[data_TOI/README_TOI.md](data_TOI/README_TOI.md)**
 
 ## Key Features of Web Applications
 
