@@ -14,10 +14,14 @@ For astronomy amateurs, classifying exoplanet candidates from raw telescopic dat
 Our approach involves using the powerful XGBoost algorithm to train classification models on this data. We've developed separate models for KOI and TOI data, achieving respectable baseline accuracy. More importantly, we've wrapped the entire workflow into an interactive web application using Streamlit. This UI allows users to load data, visualize features, train a model, and interpret the results using SHAP (SHapley Additive exPlanations), making the complex process of machine learning more intuitive and transparent.
 
 - Two models for KOI and TOI Exoplanet Detection are provided.
-    - Simple baseline on TOI test set: Accuracy:  0.8169, Precision: 0.7773, Recall:    0.8371
-    - Simple baseline on KOI test set: Accuracy:  0.8796, Precision: 0.9039, Recall:    0.9018
+    - Simple baseline on TOI test set: Accuracy:  0.8169, Precision: 0.7773, Recall: 0.8371
+    - Simple baseline on KOI test set: Accuracy:  0.8796, Precision: 0.9039, Recall: 0.9018
+
 - An interactive Streamlit web application for classifying exoplanet candidates from TESS Object of Interest (TOI) data.
     - This tool provides a simple, step-by-step user interface to walk through the entire machine learning workflow: from loading and visualizing data to training a model, running inference, and interpreting the results.
+
+## Results for KOI and ROI
+
 
 
 ## Key Features of Web Applications
@@ -40,6 +44,8 @@ This demo shows the application running at 2× speed.
     9.  Inference on Test Data
     10. Model Interpretation with SHAP Plots
 *   **Customizable Training**: Tune XGBoost hyperparameters directly in the UI before running the training.
+
+
 
 ## Q and A
 
