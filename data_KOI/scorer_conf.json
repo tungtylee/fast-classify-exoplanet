@@ -1,0 +1,12 @@
+{
+    "id_column": "kepid",
+    "target_column": "koi_disposition",
+    "mapping": {
+        "CONFIRMED": "positive",
+        "CANDIDATE": "positive",
+        "FALSE POSITIVE": "negative",
+        "NOT DISPOSITIONED": "dontcare",
+        "positive": "positive",
+        "negative": "negative"
+    }
+}
