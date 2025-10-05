@@ -59,9 +59,9 @@ def ui_step_1_select_data():
                 st.rerun()
         return False
     
-st.success("Raw data loaded successfully.")
-st.dataframe(st.session_state.raw_data.head())
-return True
+    st.success("Raw data loaded successfully.")
+    st.dataframe(st.session_state.raw_data.head())
+    return True
 
 def ui_step_2_header_info():
     st.subheader("2. Provide Header Info")
