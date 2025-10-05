@@ -7,7 +7,7 @@ Welcome to our project! We are amateurs passionate about exoplanet detection and
 
 ## Presentation
 
-[Link to Presentation]()
+[Link to Presentation](https://drive.google.com/file/d/1B0k1cpDQLkjj5LcxFcWRdGhjrGYpyMJ5/view?usp=share_link)
 
 ## Summary
 
