@@ -99,6 +99,9 @@ This demo shows the application running at 2× speed.
 
 ![image](https://github.com/tungtylee/fast-classify-exoplanet/blob/main/readme_imgs/0910.png)
 
+**SHAP Plots**:  
+![image](https://github.com/tungtylee/fast-classify-exoplanet/blob/main/readme_imgs/10.png)
+
 ## Q and A
 
 **Q: What's this project for?**
