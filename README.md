@@ -22,9 +22,12 @@ Our approach involves using the powerful XGBoost algorithm to train classificati
 - An interactive Streamlit web application for classifying exoplanet candidates from TESS Object of Interest (TOI) data.
     - This tool provides a simple, step-by-step user interface to walk through the entire machine learning workflow: from loading and visualizing data to training a model, running inference, and interpreting the results.
 
-## Results for KOI and ROI
+## Results for KOI and TOI Analysis
 
-Please refer to the **[data_TOI/README_TOI.md](data_TOI/README_TOI.md)** file for a complete guide to the individual Python scripts, their parameters, and example workflows.
+- Take TOI for example. We start to load data, understand the column, and finally select eight features. Those are related to toi parameter (pl_orbper, pl_trandurh, and pl_trandep), and some are related to stellar (st_tmag, st_dist, st_teff, st_logg, and st_rad).
+- A simple baseline on TOI test set: Accuracy:  0.8169, Precision: 0.7773, Recall: 0.8371
+- We also perform some SHAP analysis.
+- Please refer to the **[data_TOI/README_TOI.md](data_TOI/README_TOI.md)** file for a complete guide to the individual Python scripts, their parameters, and example workflows.
 
 ## Key Features of Web Applications
 
@@ -123,7 +126,6 @@ In the spirit of transparency, we want to detail our use of AI tools throughout 
 - **Documentation & Content:** Gemini also assisted in drafting, refining, and formatting this README and other documentation.
 - **Creative Assets:** Our team photo was generated using a GPT-based image generator, and the text-to-speech narration in our introduction video was created with Kokoro TTS.
 
-We believe in crediting these powerful tools for their role in our development process.
 
 ## Contributing
 
