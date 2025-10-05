@@ -1,4 +1,6 @@
-# Fast Classify Exoplanet
+# The Stargazer's Logbook
+
+*An Interactive Tool built from an Amateur's Exoplanet Trials over KOI and TOI.*
 
 (Team Whitespace 2025 for SpaceApp 2025)
 Welcome to our project! We are amateurs passionate about exoplanet detection and we’re open to suggestions. Our goal is to collaborate and learn with others who share the same interest in exoplanet detection.
