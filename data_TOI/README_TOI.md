@@ -81,6 +81,43 @@ auc,acc,f1,precision,recall,fold
 0.8996048594566736,0.8212917052826691,0.8289441851842174,0.8018016537741024,0.8585235816814765,3.0
 ```
 
+### Reproducing the Results
+
+The following commands show how to reproduce the inference results, scoring, and SHAP analysis plots presented above, using the pre-trained model.
+
+```bash
+## The model has been trained and is available in the ckpt/ directory.
+## This command shows how it was originally trained.
+# python train_xgb_toi_cv.py \
+#   --config scorer_conf.json \
+#   --train_csv data/train_set_binary.csv \
+#   --inference_csv data/test_set_filtered.csv \
+#   --out_csv results/test_set_pred.csv \
+#   --feats "pl_orbper,pl_trandurh,pl_trandep,st_teff,st_logg,st_rad,st_tmag,st_dist" \
+#   --n_estimators 300 --learning_rate 0.05 --max_depth 4 \
+#   --subsample 0.8 --colsample_bytree 0.8 --min_child_weight 5 \
+#   --reg_lambda 5.0 --reg_alpha 0.0 \
+#   --balance auto --seed 42 \
+#   --cv --folds 5 --eval_metric auc \
+#   --model_out ckpt/xgb_2025-10-04-rerun.joblib
+
+# 1. Run inference with the pre-trained model
+python infer_xgb_toi.py \
+  --model ckpt/xgb_2025-10-04.joblib \
+  --inference_csv data/test_set_filtered.csv \
+  --out_csv results/test_set_pred_2025-10-04.csv \
+  --threshold 0.5
+
+# 2. Score the predictions against the ground truth
+python score_model.py data/test_set_filtered.csv results/test_set_pred_2025-10-04.csv
+
+# 3. Generate SHAP analysis plots
+python shap_report.py \
+  --model xgb_model.joblib \
+  --train_csv data/train_set_filtered.csv \
+  --id_column toi --target_column tfopwg_disp \
+  --out_prefix shapout/shap_xgb
+```
 
 ## Scripts
 
@@ -197,7 +234,27 @@ python train_xgb_toi_cv.py \
   --cv --folds 5
 ```
 
-### 8. `shap_report.py`
+### 8. `infer_xgb_toi.py`
+
+This script runs inference using a pre-trained XGBoost model. It loads a saved `.joblib` model and applies it to a CSV file, saving the predictions to a new CSV file.
+
+**Usage:**
+```bash
+python infer_xgb_toi.py \
+  --model <path_to_model.joblib> \
+  --inference_csv <path_to_inference_data.csv> \
+  --out_csv <path_to_output_predictions.csv>
+```
+
+**Example:**
+```bash
+python infer_xgb_toi.py \
+  --model ckpt/xgb_2025-10-04.joblib \
+  --inference_csv data/test_set_filtered.csv \
+  --out_csv results/test_set_pred.csv
+```
+
+### 9. `shap_report.py`
 
 This script generates SHAP (SHapley Additive exPlanations) reports to help interpret a trained model. It loads a saved model and uses a dataset to create several outputs: a feature importance CSV, a feature importance bar plot, a SHAP beeswarm plot, and dependence plots for the most important features.
 
