@@ -13,3 +13,4 @@ shap
 
 # for app
 streamlit
+plotly
