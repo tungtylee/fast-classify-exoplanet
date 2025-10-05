@@ -73,8 +73,8 @@ F1-Score:  0.8061
 
 ## Key Features of Web Applications
 
-This demo shows the application running at 2× speed.
-[![Demo (2× speed)](assets/demo_thumb.png)](https://github.com/user-attachments/assets/e14ab151-ac11-4c5f-bcd7-ccccd5b0b1f0)
+This demo shows the application running at 2× speed.  
+👉 [Click here to watch the demo video](https://github.com/user-attachments/assets/e14ab151-ac11-4c5f-bcd7-ccccd5b0b1f0)
 
 *   **Interactive Web Interface**: A user-friendly, browser-based application for the entire classification process.
 *   **Flexible Data Input**: Upload your own CSV data or use the sample TOI files included in the project.
