@@ -80,7 +80,9 @@ This demo shows the application running at 2× speed.
 *   **Flexible Data Input**: Upload your own CSV data or use the sample TOI files included in the project.  
 ![image](https://github.com/tungtylee/fast-classify-exoplanet/blob/main/readme_imgs/01.png)   
 
-*   **Data Exploration**: Interactively visualize data distributions and feature relationships with 1D and 2D plots.
+*   **Data Exploration**: Interactively visualize data distributions and feature relationships with 1D and 2D plots.  
+![image](https://github.com/tungtylee/fast-classify-exoplanet/blob/main/readme_imgs/05.png)   
+
 *   **Guided Workflow**: Follow a clear, numbered sequence of steps:
     1.  Data Loading
     2.  Header Information Review
@@ -92,9 +94,10 @@ This demo shows the application running at 2× speed.
     8.  XGBoost Model Training with Cross-Validation
     9.  Inference on Test Data
     10. Model Interpretation with SHAP Plots
-*   **Customizable Training**: Tune XGBoost hyperparameters directly in the UI before running the training.
+*   **Customizable Training**: Tune XGBoost hyperparameters directly in the UI before running the training.  
+![image](https://github.com/tungtylee/fast-classify-exoplanet/blob/main/readme_imgs/08.png)
 
-
+![image](https://github.com/tungtylee/fast-classify-exoplanet/blob/main/readme_imgs/0910.png)
 
 ## Q and A
 
