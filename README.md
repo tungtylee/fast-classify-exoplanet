@@ -77,7 +77,9 @@ This demo shows the application running at 2× speed.
 👉 [Click here to watch the demo video](https://github.com/user-attachments/assets/e14ab151-ac11-4c5f-bcd7-ccccd5b0b1f0)
 
 *   **Interactive Web Interface**: A user-friendly, browser-based application for the entire classification process.
-*   **Flexible Data Input**: Upload your own CSV data or use the sample TOI files included in the project.
+*   **Flexible Data Input**: Upload your own CSV data or use the sample TOI files included in the project.  
+![image](https://github.com/tungtylee/fast-classify-exoplanet/blob/main/readme_imgs/01.png)   
+
 *   **Data Exploration**: Interactively visualize data distributions and feature relationships with 1D and 2D plots.
 *   **Guided Workflow**: Follow a clear, numbered sequence of steps:
     1.  Data Loading
