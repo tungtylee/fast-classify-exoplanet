@@ -7,7 +7,7 @@ This tool provides a simple, step-by-step user interface to walk through the ent
 ## Key Features
 
 This demo shows the application running at 2× speed.
-[![Demo (2× speed)](assets/demo_thumb.png)](assets/output_2x.mp4?raw=1)
+[🎬 Watch demo (2× speed)](https://github.com/user-attachments/assets/e14ab151-ac11-4c5f-bcd7-ccccd5b0b1f0)
 
 *   **Interactive Web Interface**: A user-friendly, browser-based application for the entire classification process.
 *   **Flexible Data Input**: Upload your own CSV data or use the sample TOI files included in the project.
