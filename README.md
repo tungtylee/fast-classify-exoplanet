@@ -24,7 +24,7 @@ Our approach involves using the powerful XGBoost algorithm to train classificati
 
 ## Results for KOI and ROI
 
-
+Please refer to the **[data_TOI/README_TOI.md](data_TOI/README_TOI.md)** file for a complete guide to the individual Python scripts, their parameters, and example workflows.
 
 ## Key Features of Web Applications
 
@@ -118,7 +118,12 @@ The data used in this project is from the NASA Kepler Object of Interest (KOI) a
 
 ## AI Usage Declaration
 
-In the spirit of transparency, we want to acknowledge the use of AI in this project. AI-powered tools were occasionally used to assist in the development of small scripts and code snippets. Furthermore, AI was utilized to help draft, refine, and format parts of the documentation, including this README file.
+In the spirit of transparency, we want to detail our use of AI tools throughout this project. We utilized various models for specific tasks:
+- **Code Development:** OpenAI's GPT models were used to write and revise some Python functions. Google's Gemini was instrumental in building the Streamlit UI based on our original analysis scripts.
+- **Documentation & Content:** Gemini also assisted in drafting, refining, and formatting this README and other documentation.
+- **Creative Assets:** Our team photo was generated using a GPT-based image generator, and the text-to-speech narration in our introduction video was created with Kokoro TTS.
+
+We believe in crediting these powerful tools for their role in our development process.
 
 ## Contributing
 
@@ -144,3 +149,8 @@ This project is licensed under the MIT License.
 - **Streamlit:** [Documentation](https://docs.streamlit.io/)
 - **XGBoost:** [Documentation](https://xgboost.readthedocs.io/en/stable/)
 - **SHAP:** [Documentation](https://shap.readthedocs.io/en/latest/)
+
+### AI Tools & Services
+- **Google Gemini:** [gemini site](https://gemini.google.com/app)
+- **OpenAI ChatGPT model:** [chatgpt site](https://chatgpt.com/)
+- **Kokoro TTS (v0.9.4):** [GitHub](https://github.com/hexgrad/kokoro)
